@@ -28,7 +28,7 @@ def listener():
 
     # Convert audio to text
     try:
-        prompt = r.recognize_google(audio, language='it-IT') # Set language to Italian
+        prompt = r.recognize_google(audio, language='en-US') # Set language to Italian
         
     except :
         prompt = "Generic Error"
@@ -58,10 +58,18 @@ def callCompletion(prompt):
 def textToAudio(text):
     # Initialize text-to-speech engine
     engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+
+    # Set the language to English (United States)
+    for voice in voices:
+        if voice.name == 'Microsoft Zira Desktop - English (United States)':
+            engine.setProperty('voice', voice.id)
+            break
 
     # Set the text-to-speech engine properties
     engine.setProperty('rate', 150)  # Set the speaking rate (words per minute)
     engine.setProperty('volume', 1)  # Set the volume (0 to 1)
+
     # Speak the text
     engine.say(text)
     engine.runAndWait()
@@ -71,6 +79,7 @@ def textToAudio(text):
 #*******************************************
 
 #Audio input from user's micrhophone
+
 prompt, error = listener()
 
 
